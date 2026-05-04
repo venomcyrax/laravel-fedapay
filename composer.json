@@ -1,0 +1,29 @@
+{
+    "name": "rivascotech/laravel-fedapay",
+    "description": "Module FedaPay modulaire et réutilisable pour Laravel (Mobile Money — Afrique de l'Ouest)",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["laravel", "fedapay", "payment", "mobile-money", "west-africa", "xof"],
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^11.0|^12.0",
+        "fedapay/fedapay-php": "^0.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "RivascoTech\\FedaPay\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "RivascoTech\\FedaPay\\FedaPayServiceProvider"
+            ],
+            "aliases": {
+                "FedaPay": "RivascoTech\\FedaPay\\Facades\\FedaPay"
+            }
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
