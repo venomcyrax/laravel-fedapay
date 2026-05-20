@@ -68,18 +68,12 @@ return [
     'direct_payment_enabled' => env('FEDAPAY_DIRECT_ENABLED', false),
 
     'operators' => [
+        // ── Bénin ──────────────────────────────────────────────────────────
         [
             'id'       => 'mtn_bj',
             'label'    => 'MTN Bénin',
             'endpoint' => 'mtn_open',
             'country'  => 'bj',
-            'enabled'  => false,
-        ],
-        [
-            'id'       => 'mtn_ci',
-            'label'    => 'MTN Côte d\'Ivoire',
-            'endpoint' => 'mtn_open',
-            'country'  => 'ci',
             'enabled'  => false,
         ],
         [
@@ -90,10 +84,49 @@ return [
             'enabled'  => false,
         ],
         [
+            'id'       => 'sbin_bj',
+            'label'    => 'Celtiis Bénin',
+            'endpoint' => 'sbin',
+            'country'  => 'bj',
+            'enabled'  => false,
+        ],
+        // ── Togo ───────────────────────────────────────────────────────────
+        [
+            'id'       => 'togocel_tg',
+            'label'    => 'T-Money / Mixx by Yas (Togo)',
+            'endpoint' => 'togocel',
+            'country'  => 'tg',
+            'enabled'  => false,
+        ],
+        [
             'id'       => 'moov_tg',
             'label'    => 'Moov Togo',
-            'endpoint' => 'moov',
+            'endpoint' => 'moov_tg',
             'country'  => 'tg',
+            'enabled'  => false,
+        ],
+        // ── Côte d'Ivoire ──────────────────────────────────────────────────
+        [
+            'id'       => 'mtn_ci',
+            'label'    => 'MTN Côte d\'Ivoire',
+            'endpoint' => 'mtn_ci',
+            'country'  => 'ci',
+            'enabled'  => false,
+        ],
+        // ── Niger ──────────────────────────────────────────────────────────
+        [
+            'id'       => 'airtel_ne',
+            'label'    => 'Airtel Niger',
+            'endpoint' => 'airtel_ne',
+            'country'  => 'ne',
+            'enabled'  => false,
+        ],
+        // ── Sénégal ────────────────────────────────────────────────────────
+        [
+            'id'       => 'free_sn',
+            'label'    => 'Free Sénégal',
+            'endpoint' => 'free_sn',
+            'country'  => 'sn',
             'enabled'  => false,
         ],
     ],

@@ -126,6 +126,39 @@ class FedaPayManager
     }
 
     /**
+     * Récupère le statut actuel d'une transaction via l'API FedaPay.
+     * Utilisé pour le polling après un paiement direct ou redirect.
+     *
+     * @param  string $fedapayId  ID FedaPay de la transaction (ex: "111099897")
+     * @return array  ['fedapay_id', 'status', 'amount', 'currency', 'paid_at', 'last_error_code']
+     */
+    public function getTransactionStatus(string $fedapayId): array
+    {
+        $this->bootSdk();
+
+        $remote = \FedaPay\Transaction::retrieve((int) $fedapayId);
+
+        $status = $remote->status ?? 'pending';
+
+        // Mettre à jour le statut local si la transaction existe en DB
+        $tx = FedaPayTransaction::where('fedapay_id', $fedapayId)->first();
+        if ($tx && $tx->status !== $status) {
+            $tx->status  = $status;
+            $tx->paid_at = ($status === 'approved') ? now() : null;
+            $tx->save();
+        }
+
+        return [
+            'fedapay_id'     => $fedapayId,
+            'status'         => $status,
+            'amount'         => $tx?->amount ?? ($remote->amount ?? null),
+            'currency'       => $tx?->currency ?? config('fedapay.currency', 'XOF'),
+            'paid_at'        => $tx?->paid_at?->toISOString(),
+            'last_error_code'=> $remote->last_error_code ?? null,
+        ];
+    }
+
+    /**
      * Vérifie si un opérateur supporte le paiement direct.
      */
     public function supportsDirectPayment(string $operatorId): bool
@@ -133,7 +166,8 @@ class FedaPayManager
         $op = $this->findOperator($operatorId);
         if (! $op || ! ($op['enabled'] ?? false)) return false;
 
-        return in_array($op['endpoint'], ['mtn_open', 'moov']);
+        // Tous les opérateurs avec un endpoint défini supportent le paiement direct
+        return ! empty($op['endpoint']);
     }
 
     // ── Interne ──────────────────────────────────────────────────────────
